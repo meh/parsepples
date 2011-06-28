@@ -1,0 +1,60 @@
+/**************************************************************************
+ * Copyleft meh. [http://meh.paranoid.pk | meh@paranoici.org]
+ *
+ * This file is part of parsepples
+ *
+ * Parsepples is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Parsepples is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with parsepples. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "parsepples/result.hpp"
+
+namespace Parsepples {
+
+Result::Result (std::string type)
+{
+    _type = type;
+}
+
+std::string
+Result::type (void)
+{
+    return _type;
+}
+
+Result::String::String (void) : Result("string")
+{
+    _value    = "";
+    _position = { 0, 0 };
+}
+
+Result::String::String (std::string value, Source::Position position, Source::LineCache* cache)
+{
+    _value    = value;
+    _position = position;
+    _cache    = cache;
+}
+
+std::string&
+Result::String::value (void)
+{
+    return _value;
+}
+
+Souce::Position&
+Result::String::position (void)
+{
+    return _position;
+}
+
+}
