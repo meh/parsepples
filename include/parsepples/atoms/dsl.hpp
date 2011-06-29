@@ -22,6 +22,15 @@
 
 namespace Parsepples { namespace Atoms {
 
+namespace Exceptions {
+    /**
+     * Exception thrown when there's unconsumed output in the source
+     */
+    class UnconsumedInput : public std::runtime_error { public:
+        UnconsumedInput (std::string message) : std::runtime_error(message) { };
+    };
+}
+
 class Base;
 
 class DSL

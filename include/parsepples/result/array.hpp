@@ -29,7 +29,10 @@ namespace Parsepples {
 class Array : public Result
 {
     Array (void);
+
     Array (std::vector<Result*>& value);
+
+    virtual ~Array (void);
 
     std::vector<Result*>& value (void);
 

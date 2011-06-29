@@ -27,7 +27,24 @@
 class Slice
 {
   public:
-    Slice (std::string buffer, size_t start, LineCache* cache);
+    Slice (std::string buffer, size_t offset, LineCache* cache);
+
+    std::string& buffer (void);
+
+    size_t& offset (void);
+
+    LineCache* cache (void);
+
+    Slice operator + (Slice& slice);
+
+    operator std::string (void);
+
+  private:
+    std::string _buffer;
+
+    size_t _offset;
+
+    LineCache* _cache;
 };
 
 #endif

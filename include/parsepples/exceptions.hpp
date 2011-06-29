@@ -20,17 +20,23 @@
 #ifndef _PARSEPPLES_EXCEPTIONS_H
 #define _PARSEPPLES_EXCEPTIONS_H
 
-#include <exception>
+#include <stdexcept>
+#include <string>
 
 namespace Parsepples { namespace Exceptions {
 
-class RegexpCompilation : public exception { };
-class RegexpStudy       : public exception { };
+/**
+ * Exception thrown when the Atoms::Re compilation fails
+ */
+class RegexpCompilation : public std::runtime_error { public:
+    RegexpCompilation (std::string message) : std::runtime_error(message) { };
+};
 
-class NoBounds : public exception {
-    virtual const char* what() const throw() {
-        return "The vector has no bounds";
-    }
+/**
+ * Exception thrown when the Atoms::Re study fails
+ */
+class RegexpStudy : public std::runtime_error { public:
+    RegexpStudy (std::string message) : std::runtime_error(message) { };
 };
 
 } }

@@ -17,43 +17,49 @@
  * along with parsepples. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PARSEPPLES_ATOMS_CONTEXT_H
-#define _PARSEPPLES_ATOMS_CONTEXT_H
+#include "parsepples/source.hpp"
 
-#include "parsepples/atoms/response.hpp"
+namespace Parsepples {
 
-namespace Parsepples { namespace Atoms {
-
-namespace Exceptions {
-    /**
-     * Exception thrown when there's unconsumed output in the source
-     */
-    class NotCached : public std::runtime_error { public:
-        NotCached (void) : std::runtime_error("The searched item is not cached") { };
-    };
+Source::Slice::Slice (std::string buffer, size_t offset, Source::LineCache* cache)
+{
+    _buffer = buffer;
+    _offset = offset;
+    _cache  = cache;
 }
 
-class Context
+inline
+std::sring&
+Source::Slice::buffer (void)
 {
-  public:
-    struct Cache {
-        Response response;
-        size_t   offset;
-    };
+    return _buffer;
+}
 
-  public:
-    Context (void);
+inline
+size_t
+Source::Slice::offset (void)
+{
+    return _offset;
+}
 
-    ~Context (void);
+inline
+Source::LineCache*
+Source::Slice::cache (void)
+{
+    return _cache;
+}
 
-    Response* cache (Base* obj, Source& source);
+inline
+Source::Slice
+Source::Slice::operator + (Slice& slice)
+{
+    return Source::Slice(buffer() + slice.buffer(), offset(), cache());
+}
 
-    Response* cache (Base* obj, Source& source, Response* response);
+inline
+Source::Slice::operator std::string ()
+{
+    return _buffer;
+}
 
-  private:
-    std::map<size_t, std::map<Base*, Cache&> > _cache;
-};
-
-} }
-
-#endif
+}

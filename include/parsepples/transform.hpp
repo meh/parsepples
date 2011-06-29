@@ -17,38 +17,51 @@
  * along with parsepples. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PARSEPPLES_RESULT_H
-#define _PARSEPPLES_RESULT_H
+#ifndef _PARSEPPLES_TRANSFORM_H
+#define _PARSEPPLES_TRANSFORM_H
 
-#include <string>
-#include <vector>
-#include <map>
+#ifndef TRANSFORM
+#   define TRANSFORM \
+        public: void initialize (void)
+#endif
 
-#include "parsepples/source.hpp"
+#define PP_TRANSFORM \
+    public: void initialize (void)
+
+#ifndef T_RULE
+#   define T_RULE(name) \
+        Parsepples::Result* name (Parsepples::Result* data)
+#endif
+
+#ifndef TRANSFORM_RULE
+#   define TRANSFORM_RULE(name) \
+        Parsepples::Result* name (Parsepples::Result* data)
+#endif
+
+#define PP_TRANSFORM_RULE(name) \
+    Parsepples::Result* name (Parsepples::Result* data)
 
 namespace Parsepples {
 
-class Result
+class Transform
 {
   public:
-    static Result* flatten (Result* data);
+    typedef Result* (*Transformer) (Result*);
 
   public:
-    Result (std::string type);
+    Transform (void);
 
-    virtual ~Result (void);
+    virtual void initialize (void);
 
-    std::string& type (void);
+    Result* apply (Result* data);
 
-  private:
-    std::string _type;
-};
+    void simple (std::string name, Transformer* transformer);
 
+    void sequence (std::string name, Transformer* transformer);
+
+    void subtree (std::string name, Transformer* transformer);
 }
 
-#include "parsepples/result/string.hpp"
-#include "parsepples/result/array.hpp"
-#include "parsepples/result/hash.hpp"
-#include "parsepples/result/custom.hpp"
+}
 
 #endif

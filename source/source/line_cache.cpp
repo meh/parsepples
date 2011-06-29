@@ -21,6 +21,15 @@
 
 namespace Parsepples {
 
+namespace Exceptions {
+    /**
+     * Exception thrown when the lbounds method fails
+     */
+    static class NoBounds : public std::runtime_error { public:
+        NoBounds (void) : std::runtime_error("The vector has no bounds") { };
+    };
+}
+
 static
 size_t
 lbound (std::vector<size_t> array, size_t bound)

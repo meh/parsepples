@@ -32,29 +32,10 @@ Result::type (void)
     return _type;
 }
 
-Result::String::String (void) : Result("string")
+Result*
+Result::flatten (Result* data)
 {
-    _value    = "";
-    _position = { 0, 0 };
-}
-
-Result::String::String (std::string value, Source::Position position, Source::LineCache* cache)
-{
-    _value    = value;
-    _position = position;
-    _cache    = cache;
-}
-
-std::string&
-Result::String::value (void)
-{
-    return _value;
-}
-
-Souce::Position&
-Result::String::position (void)
-{
-    return _position;
+    std::cout << data->type() << std::endl;
 }
 
 }

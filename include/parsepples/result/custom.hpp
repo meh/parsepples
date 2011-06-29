@@ -17,66 +17,32 @@
  * along with parsepples. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PARSEPPLES_SOURCE_H
-#define _PARSEPPLES_SOURCE_H
+#ifndef _PARSEPPLES_RESULT_H
+#   error "Include parsepples/result.hpp, not this file"
+#endif
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <map>
+#ifndef _PARSEPPLES_RESULT_CUSTOM_H
+#define _PARSEPPLES_RESULT_CUSTOM_H
 
 namespace Parsepples {
 
-class Source
+template <class T> class Custom : public Result
 {
-  public:
-    typedef void (*Watcher)(Source& source);
-
-  public:
-    struct Position {
-        size_t line;
-        size_t column;
+    Custom (void) : Result("custom") {
     };
 
-    #include "parsepples/source/line_cache.hpp"
-    #include "parsepples/source/slice.hpp"
+    Custom (T value) : Result("custom") {
+        _value = value;
+    }
 
-  public:
-    Source (std::streambuf* buffer);
-
-    Source (std::string source);
-
-    ~Source (void);
-
-    Slice read (size_t length);
-
-    bool eof (void);
-
-    size_t position (void);
-
-    void position (size_t value);
-
-    Position line_and_column (void);
-
-    Position line_and_column (size_t position);
-
-    void watch (Watcher* watcher);
-
-    long id (void);
+    T value (void) {
+        return _value;
+    };
 
   private:
-    std::stringstream* _string;
-
-    std::istream* _input;
-
-    void* _tmp;
-
-    LineCache _cache;
-
-    size_t _offset;
-
-    std::vector<Watcher*> _watchers;
+    T _value;
 };
 
 }
+
 #endif

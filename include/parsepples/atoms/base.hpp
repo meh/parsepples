@@ -31,9 +31,9 @@ class Base : public DSL
   public:
     Result* parse (Source source);
 
-    Response& apply (Source& source, Context& context);
+    Response* apply (Source* source, Context* context);
 
-    virtual Response attempt (Source& source, Context& context) = 0;
+    virtual Response* attempt (Source* source, Context* context) = 0;
 
   private:
     void _parse_failed (std::string reason);
@@ -46,7 +46,7 @@ class Base : public DSL
      *
      * @return The Sucess object.
      */
-    Success& success (Result* result);
+    Success* success (Result* result);
 
     /**
      * Return a Failure object, to use when the parsing has been unsuccesful
@@ -57,9 +57,11 @@ class Base : public DSL
      *
      * @return The Failure object
      */
-    Failure& error (Source& source, std::string message, Source::Position position);
+    Failure* error (Source& source, std::string message, Source::Position position);
 
   private:
+    Context _context;
+
     std::string _cause;
 };
 

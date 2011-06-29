@@ -17,6 +17,7 @@
  * along with parsepples. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "parsepples/exceptions.hpp"
 #include "parsepples/atoms.hpp"
 
 namespace Parsepples { namespace Atoms {
@@ -24,9 +25,7 @@ namespace Parsepples { namespace Atoms {
 Result*
 Base::parse (Source source)
 {
-    Context context;
-
-    Response response = apply(source, context);
+    Response* response = apply(&source);
 
     if (response.error()) {
         _parse_failed(static_cast<Failure*>(&response)->reason);
@@ -37,33 +36,48 @@ Base::parse (Source source)
             throw Exceptions::UnconsumedInput(_cause);
         }
         else {
-            
+            throw Exceptions::UnconsumedInput(std::string("Don't know what to do with ") + source.read(100).buffer());
         }
     }
+
+    return Result::flatten(static_cast<Success*>(&response)->result);
 }
 
-Response
-Base::apply (Source& source, Context& context)
+Response*
+Base::apply (Source& source)
 {
     size_t old = source.position();
 
-    Response* response = context.cache(this, source);
-
-    if (response == NULL) {
-        response = attempt(source, context);
+    try {
+        Response* response = context.cache(this, source);
+    }
+    catch (Exceptions::NotCached& e) {
+        Response* response = attempt(source, context);
 
         context.cache(this, source, response, old);
     }
 
     source.position(old);
 
-    return *response;
+    return response;
 }
 
 void
 Base::_parse_failed (std::string reason)
 {
     throw Exceptions::ParseError(_cause = reason);
+}
+
+Success*
+Base::success (Result* result)
+{
+    return new Success(result);
+}
+
+Failure*
+Base::error (Source* source, std::string message, Source::Position position)
+{
+    return new Failure(source, message, position);
 }
 
 } }

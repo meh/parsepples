@@ -20,23 +20,61 @@
 #ifndef _PARSEPPLES_PARSER_H
 #define _PARSEPPLES_PARSER_H
 
-#define ROOT(name) \
+#ifndef ROOT
+#   define ROOT(name) \
+        Parsepples::Atoms::Base* root (void) { \
+            return this->name(); \
+        }
+#endif
+
+#ifndef PARSER_ROOT
+#   define PARSER_ROOT(name) \
+        Parsepples::Atoms::Base* root (void) { \
+            return this->name(); \
+        }
+#endif
+
+#define PP_PARSER_ROOT(name) \
     Parsepples::Atoms::Base* root (void) { \
         return this->name(); \
     }
 
-#define PP_ROOT(name) \
-    Parsepples::Atoms::Base* root (void) { \
-        return this->name(); \
-    }
+#ifndef RULE
+#   define RULE(name) \
+        Parsepples::Atoms::Base* name (void)
+#endif
 
-#define RULE(name, block) \
-    Parsepples::Atoms::Base* name (void) \
-        block
+#ifndef PARSER_RULE
+#   define PARSER_RULE(name) \
+        Parsepples::Atoms::Base* name (void)
+#endif
 
-#define PP_RULE(name, block) \
-    Parsepples::Atoms::Base* name (void) \
-        block
+#define PP_PARSER_RULE(name) \
+    Parsepples::Atoms::Base* name (void)
+
+#ifndef HELPER
+#   define HELPER(name) \
+        Parsepples::Atoms::Base* name
+#endif
+
+#ifndef PARSER_HELPER
+#   define PARSER_HELPER(name) \
+    Parsepples::Atoms::Base* name
+#endif
+
+#define PP_PARSER_HELPER(name) \
+    Parsepples::Atoms::Base* name
+
+#ifndef HELPER_RESULT
+#   define HELPER_RESULT Parsepples::Atoms::Base*
+#endif
+
+#ifndef PARSER_HELPER_RESULT
+#   define PARSER_HELPER_RESULT Parsepples::Atoms::Base*
+#endif
+
+#define PP_PARSER_HELPER_RESULT Parsepples::Atoms::Base*
+
 
 #include "parsepples/atoms.hpp"
 

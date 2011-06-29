@@ -32,12 +32,16 @@ class String : public Result
 
     String (Source::Slice value);
 
+    virtual ~String (void);
+
     /**
      * Return the std::string value
      *
      * @return The content
      */
     std::string& value (void);
+
+    Source::Position& position (void);
 
   private:
     Source::Slice _value;

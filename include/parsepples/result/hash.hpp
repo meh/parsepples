@@ -29,7 +29,10 @@ namespace Parsepples {
 class Hash : public Result
 {
     Hash (void);
+
     Hash (std::map<std::string, Result*>& value);
+
+    virtual ~Hash (void);
 
     std::map<std::string, Result*>& value (void);
 

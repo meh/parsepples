@@ -17,43 +17,5 @@
  * along with parsepples. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PARSEPPLES_ATOMS_CONTEXT_H
-#define _PARSEPPLES_ATOMS_CONTEXT_H
-
-#include "parsepples/atoms/response.hpp"
-
-namespace Parsepples { namespace Atoms {
-
-namespace Exceptions {
-    /**
-     * Exception thrown when there's unconsumed output in the source
-     */
-    class NotCached : public std::runtime_error { public:
-        NotCached (void) : std::runtime_error("The searched item is not cached") { };
-    };
-}
-
-class Context
-{
-  public:
-    struct Cache {
-        Response response;
-        size_t   offset;
-    };
-
-  public:
-    Context (void);
-
-    ~Context (void);
-
-    Response* cache (Base* obj, Source& source);
-
-    Response* cache (Base* obj, Source& source, Response* response);
-
-  private:
-    std::map<size_t, std::map<Base*, Cache&> > _cache;
-};
-
-} }
-
-#endif
+#include "parsepples/parser.hpp"
+#include "parsepples/transform.hpp"

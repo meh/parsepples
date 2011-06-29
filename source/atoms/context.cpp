@@ -25,24 +25,27 @@ Context::Context (void)
 {
 }
 
-Response*
+Context::~Context (void)
+}
+
+Response&
 Context::cache (Base* obj, Source& source)
 {
     size_t start = source.position;
 
-    if (_cache.find(start) != _cache.end() && _cache[start].find(obj) != _cache[start].end()) {
-        Cache cache = _cache[start][obj];
-
-        source.position(start + cache.offset);
-
-        return cache.response;
+    if (_cache.find(start) == _cache.end() || _cache[start].find(obj) == _cache[start].end()) {
+        throw NotCached();
     }
 
-    return NULL;
+    Cache cache = _cache[start][obj];
+
+    source.position(start + cache.offset);
+
+    return cache.response;
 }
 
-Response*
-Context::cache (Base* obj, Source& source, Response* response, size_t before)
+Response&
+Context::cache (Base* obj, Source& source, Response& response, size_t before)
 {
     _cache[source.position][obj] = Cache(response, source.position - before);
 

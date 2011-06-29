@@ -26,16 +26,29 @@ namespace Parsepples {
 
 Source::Source (std::streambuf* buffer)
 {
-    _input = new std::istream(buffer);
+    _input  = new std::istream(buffer);
+    _tsring = NULL;
 }
 
 Source::Source (std::string source)
 {
-    std::stringstream input;
+    _string = new std::stringstream;
+    _string << source;
 
-    input << source;
+    _input = new std::istream(static_cast<std::streambuf*>(_string));
+}
 
-    _input = new std::istream((std::streambuf*) &input);
+Source::~Source (void)
+{
+    for (std::vector<Watcher*>::iterator it = _watchers.begin(); it < _watchers.end(); it++) {
+        *it(this);
+    }
+
+    delete _input;
+
+    if (_string) {
+        delete _string;
+    }
 }
 
 Source::Slice
@@ -72,6 +85,18 @@ Source::Position
 Source::line_and_column (size_t position)
 {
     return _cache.line_and_column(position);
+}
+
+void
+Source::watch (Watcher* watcher)
+{
+
+}
+
+long
+Source::id (void)
+{
+    return (long) this;
 }
 
 }
